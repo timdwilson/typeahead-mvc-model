@@ -9,7 +9,7 @@ Here's a screenshot of Typeahead connected to an MVC model below (the rest of th
 
 How to Setup Twitter Typeahead.js to work with MVC Models
 
-(Note: to use the Entity Framework queries in this document, you will need to install the Adventure Works database from here: https://msftdbprodsamples.codeplex.com/releases/view/55330. If you don’t need to connect to a database or have a database connection, skip ahead.  Likewise, if you already have a model you would like to connect to typeahead, skip right ahead. Finally, the full source, you can download the complete including the solution file for this example at the bottom of this page.)
+(Note: to use the Entity Framework queries in this document, you will need to install the Adventure Works database from here: https://msftdbprodsamples.codeplex.com/releases/view/55330. If you don’t need to connect to a database or have a database connection, skip ahead.  Likewise, if you already have a model you would like to connect to typeahead, skip right ahead. Finally, you can download the full source code  of this example application, including the solution file, at the bottom of this page.)
 
 1.	Edit ~\Views\Shared\_Layout.cshtml to load the typeahead.js bundle, Typeahead stylesheet and javascript that connects Typeahead to your MVC 5 model
 
