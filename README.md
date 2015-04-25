@@ -172,7 +172,7 @@ private List<Autocomplete> _GetPeople(string query)
 
 ![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/remove.png)
 
-12.	For model.Name, we need to change the control from EditorFor to AutocompleteFor. We also need to specify the key field, the method that Typeahead will call to get the people. The last parameter is false which will not have this field get the focus when the page is opened.
+12.	We need to change the control from EditorFor to AutocompleteFor. We also need to specify the property name, property key field, the method that Typeahead will call to get the lookup values and keys. The last parameter is false which will keep this field from stealing the focus when the page is loaded.
 
 ````html
 @Html.AutocompleteFor(model => model.Name, model => model.PersonId, "GetPeople", "HelloWorld", false)
