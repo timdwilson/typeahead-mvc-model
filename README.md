@@ -12,7 +12,7 @@ How to Setup Twitter Typeahead.js to work with MVC Models
 a.	Add the line to load the Typeahead stylesheet
 In ~\Views\Shared\_Layout.cshtml, add the following line before the close of the head tag:
 
-![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/typeahead_css.jpg)
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/typeahead_css.png)
 
 ````html
 <link rel="stylesheet" type="text/css" href="~/Content/typeahead.css" />
@@ -21,6 +21,8 @@ In ~\Views\Shared\_Layout.cshtml, add the following line before the close of the
 b.	Add the line to load the Typeahead MVC bundle javascript and Typeahead MVC Model javascript (that connects Typeahead to your MVC model):
 
 In ~\Views\Shared\_Layout.cshtml, add the following line after jquery and bootstrap are both loaded:
+
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/typeahead_bundle.png)
 
 ````html
     @Scripts.Render("~/bundles/typeahead")
@@ -31,9 +33,13 @@ In ~\Views\Shared\_Layout.cshtml, add the following line after jquery and bootst
 
 a.	Right-click on the Models folder and choose Add > New Item…
 
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/new_item.png)
+
 b.	For the Name, type HelloWorld.cs and click Add
 
-c.	In the Editor, add 3 new properties to the class. Hit F6 to Save and Build your project
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/add_helloworld.png)
+
+c.	In the Editor, add 4 new properties to the class. Hit F6 to Save and Build your project
 
 ````c#
         public int HelloWorldId { get; set; }
@@ -46,43 +52,69 @@ c.	In the Editor, add 3 new properties to the class. Hit F6 to Save and Build yo
 
 a.	Right-click on your project and choose Add > New Item…
 
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/new_item.png)
+
 b.	Choose “ADO.NET Entity Data Model”. For Name, type “AWModel.” Click Add
+
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/add_entity_data_model.png)
 
 c.	Choose “EF Designer from data…” Click Next >
 
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/choose_model_contents.png)
+
 d.	Click New Connection…
+
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/new_connection.png)
 
 e.	For Server name, type the name of the server you attached the AdventureWorks2012 database to. For “Select or enter a database name”, choose AdventureWorks2012. Click Ok
 
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/connection_properties.png)
+
 f.	For “Save connection settings in Web.Config as”, type AWEntities. Click Next >
 
-g.	Expand Tables and Person. Choose Person
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/awentities.png)
 
-h.	For Model Namespace, type AWModel. Click Finish
+g.	Expand Tables and Person. Choose Person. For Model Namespace, type AWModel. Click Finish
 
-i.	For some reason, Entity Framework does not like it when an entity’s primary key does not match the entity name. To fix this, open up AWModel.edmx
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/choose_person.png)
 
-j.	Rename the BusinessEntityId column to PersonId. Hit F6 to Save and Build your project
+h.	For some reason, Entity Framework does not like it when an entity’s primary key does not match the entity name. To fix this, open up AWModel.edmx
+
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/awmodel_edmx.png)
+
+i.	Rename the BusinessEntityId column to PersonId. Hit F6 to Save and Build your project
+
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/personid.png)
 
 4.	Add a new Scaffolded Item to your project
 
 a.	Right-click on the Controllers folder and choose Add > New Scaffolded Item…
 
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/add_new_scaffolded.png)
+
 b.	Choose “MVC 5 Controller with views, using Entity Framework”. Click Add
 
-c.	For the Model class, choose HelloWorld ([Project Name].Models)
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/add_scaffold.png)
 
-d.	For the Data context class, choose the data context you created earlier, AWEntities ([Project Name])
+c.	For the Model class, choose HelloWorld ([Project Name].Models). For the Data context class, choose the data context you created earlier, AWEntities ([Project Name]). For the Controller name, HelloWorldController. Click Add
 
-e.	For the Controller name, HelloWorldController. Click Add
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/add_controller.png)
 
 5.	You now have a Controller, Model and View. It’s time to get to work!
+
 6.	Open up HelloWorldController.cs.
+
 7.	Near the top of the file, add the using statements for Entity Framework exceptions:
 
 ````c#
 using System.Data.Entity.Core;
 ````
+
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/entity_core.png)
+
+For the Controller name, HelloWorldController. Click Add
+
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/add_controller.png)
 
 8.	Add code to get people out of the AdventureWorks2012 database using Entity Framework:
 
@@ -138,7 +170,11 @@ private List<Autocomplete> _GetPeople(string query)
 @using WebApplication2.Models
 ````
 
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/cshtml_using.png)
+
 11.	Since we are hiding the PersonId, we can remove the following code from the View:
+
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/remove.png)
 
 12.	For model.Name, we need to change the control from EditorFor to AutocompleteFor. We also need to specify the key field, the method that Typeahead will call to get the people. The last parameter is false which will not have this field get the focus when the page is opened.
 
@@ -146,16 +182,20 @@ private List<Autocomplete> _GetPeople(string query)
 @Html.AutocompleteFor(model => model.Name, model => model.PersonId, "GetPeople", "HelloWorld", false)
 ````
 
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/autocomplete_for.png)
+
 13.	In HelloWorldController, set a breakpoint in the second Create() (under the [HttpPost] declaration) to inspect the results returned from web page after we test out Typeahead
 
-14.	Set a breakpoint on the first line in the Create() method (underneath the HttpPost() declaration)
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/breakpoint.png)
 
-15.	Go back to Create.cshtml and hit F5 to test things out
+14.	Go back to Create.cshtml and hit F5 to test things out
 
-16.	For Message, type “Hello World!”
+15.	For Message, type “Hello World!” For Name, type “Anna.”  It might take a second or two but the list will populate with the top 10 matches. Choose “Anna Albright”
 
-17.	For Name, type “Anna.”  It might take a second or two but the list will populate with the top 10 matches. Choose “Anna Albright”
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/preview.png)
 
-18.	Notice that, in your breakpoint, if you expand “helloWorld”, that PersonId is automatically set to 325.  Neat, huh?
+17.	Notice that, in your breakpoint, if you expand “helloWorld”, that PersonId is automatically set to 325.  Neat, huh?
 
-19.	I will leave it to you to implement writing helloWorld back at to a database.  This is an example after all :)
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/watch.png)
+
+18.	I will leave it to you to implement writing helloWorld back at to a database.  This is an example after all :)

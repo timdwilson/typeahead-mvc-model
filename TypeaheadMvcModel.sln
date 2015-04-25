@@ -13,7 +13,33 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{6D3AD778-C9B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{CA45E586-9601-4B77-8A1A-AF96306A2F24}"
 	ProjectSection(SolutionItems) = preProject
-		doc\images\typeahead_css.jpg = doc\images\typeahead_css.jpg
+		doc\images\add_controller.png = doc\images\add_controller.png
+		doc\images\add_controller_data_context.png = doc\images\add_controller_data_context.png
+		doc\images\add_entity_data_model.png = doc\images\add_entity_data_model.png
+		doc\images\add_helloworld.png = doc\images\add_helloworld.png
+		doc\images\add_new_scaffolded.png = doc\images\add_new_scaffolded.png
+		doc\images\add_scaffold.png = doc\images\add_scaffold.png
+		doc\images\autocompletefor.png = doc\images\autocompletefor.png
+		doc\images\awentities.png = doc\images\awentities.png
+		doc\images\awmodel_edmx.png = doc\images\awmodel_edmx.png
+		doc\images\breakpoint.png = doc\images\breakpoint.png
+		doc\images\choose_model_contents.png = doc\images\choose_model_contents.png
+		doc\images\choose_person.png = doc\images\choose_person.png
+		doc\images\connection_properties.png = doc\images\connection_properties.png
+		doc\images\cshtml_using.png = doc\images\cshtml_using.png
+		doc\images\entity_core.png = doc\images\entity_core.png
+		doc\images\helloworld.png = doc\images\helloworld.png
+		doc\images\hiddenfor.png = doc\images\hiddenfor.png
+		doc\images\hit_breakpoint.png = doc\images\hit_breakpoint.png
+		doc\images\new_connection.png = doc\images\new_connection.png
+		doc\images\new_data_context.png = doc\images\new_data_context.png
+		doc\images\new_item.png = doc\images\new_item.png
+		doc\images\personid.png = doc\images\personid.png
+		doc\images\preview.png = doc\images\preview.png
+		doc\images\remove.png = doc\images\remove.png
+		doc\images\typeahead_bundle.png = doc\images\typeahead_bundle.png
+		doc\images\typeahead_css.png = doc\images\typeahead_css.png
+		doc\images\watch.png = doc\images\watch.png
 	EndProjectSection
 EndProject
 Global
