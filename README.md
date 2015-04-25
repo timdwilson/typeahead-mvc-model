@@ -112,10 +112,6 @@ using System.Data.Entity.Core;
 
 ![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/entity_core.png)
 
-For the Controller name, HelloWorldController. Click Add
-
-![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/add_controller.png)
-
 8.	Add code to get people out of the AdventureWorks2012 database using Entity Framework:
 
 ````c#
