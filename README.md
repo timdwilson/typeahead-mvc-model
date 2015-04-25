@@ -20,7 +20,7 @@ b.	Add the line to load the Typeahead MVC bundle javascript and Typeahead MVC Mo
 
 In ~\Views\Shared\_Layout.cshtml, add the following line after jquery and bootstrap are both loaded:
 
-''''html
+````html
     @Scripts.Render("~/bundles/typeahead")
     <script src="~/Scripts/typeahead.mvc.model.js" />
 ````    
