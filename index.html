@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Typeahead-mvc-model by timdwilson</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Typeahead-mvc-model</h1>
+        <h2>Extends Twitter&#39;s typeahead.js to work with MVC 5 models</h2>
+        <a href="https://github.com/timdwilson/typeahead-mvc-model" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="typeahead-mvc-model" class="anchor" href="#typeahead-mvc-model" aria-hidden="true"><span class="octicon octicon-link"></span></a>typeahead-mvc-model</h1>
+
+<p>Extends Twitter's typeahead.js to work with MVC 5 models</p>
+
+<p>This package extends upon the Twitter.Typeahead library and the Twitter.Typeahead.MVC library by hooking typeahead to MVC models. With a few configuration tweaks, you'll be connecting typeahead.js to your model in minutes!</p>
+
+<p>How to Setup Twitter Typeahead.js to work with MVC Models</p>
+
+<p>(Note: to use the Entity Framework queries in this document, you will need to install the Adventure Works database from here: <a href="https://msftdbprodsamples.codeplex.com/releases/view/55330">https://msftdbprodsamples.codeplex.com/releases/view/55330</a>. If you don’t need to connect to a database or have a database connection, skip ahead.  Likewise, if you already have a model you would like to connect to typeahead, skip right ahead.)</p>
+
+<ol>
+<li> Edit ~\Views\Shared_Layout.cshtml to load the typeahead.js bundle, Typeahead stylesheet and javascript that connects Typeahead to your MVC 5 model</li>
+</ol>
+
+<p>a.  Add the line to load the Typeahead stylesheet
+In ~\Views\Shared_Layout.cshtml, add the following line before the close of the head tag:</p>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">link</span> <span class="pl-e">rel</span>=<span class="pl-s"><span class="pl-pds">"</span>stylesheet<span class="pl-pds">"</span></span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/css<span class="pl-pds">"</span></span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>~/Content/typeahead.css<span class="pl-pds">"</span></span> /&gt;</pre></div>
+
+<p>b.  Add the line to load the Typeahead MVC bundle javascript and Typeahead MVC Model javascript (that connects Typeahead to your MVC model):</p>
+
+<p>In ~\Views\Shared_Layout.cshtml, add the following line after jquery and bootstrap are both loaded:</p>
+
+<p>''''html
+    @Scripts.Render("~/bundles/typeahead")
+    </p>
+
+<pre><code>
+2.  Add a new Model to your project
+
+a.  Right-click on the Models folder and choose Add &gt; New Item…
+
+b.  For the Name, type HelloWorld.cs and click Add
+
+c.  In the Editor, add 3 new properties to the class. Hit F6 to Save and Build your project
+
+''''c#
+        public int HelloWorldId { get; set; }
+        public string Message { get; set; }
+        public string Person { get; set; }
+        public int PersonId { get; set; }
+</code></pre>
+
+<ol>
+<li> Add the Entity Framework for AdventureWorks2012 to your project.</li>
+</ol>
+
+<p>a.  Right-click on your project and choose Add &gt; New Item…</p>
+
+<p>b.  Choose “ADO.NET Entity Data Model”. For Name, type “AWModel.” Click Add</p>
+
+<p>c.  Choose “EF Designer from data…” Click Next &gt;</p>
+
+<p>d.  Click New Connection…</p>
+
+<p>e.  For Server name, type the name of the server you attached the AdventureWorks2012 database to. For “Select or enter a database name”, choose AdventureWorks2012. Click Ok</p>
+
+<p>f.  For “Save connection settings in Web.Config as”, type AWEntities. Click Next &gt;</p>
+
+<p>g.  Expand Tables and Person. Choose Person</p>
+
+<p>h.  For Model Namespace, type AWModel. Click Finish</p>
+
+<p>i.  For some reason, Entity Framework does not like it when an entity’s primary key does not match the entity name. To fix this, open up AWModel.edmx</p>
+
+<p>j.  Rename the BusinessEntityId column to PersonId. Hit F6 to Save and Build your project</p>
+
+<ol>
+<li> Add a new Scaffolded Item to your project</li>
+</ol>
+
+<p>a.  Right-click on the Controllers folder and choose Add &gt; New Scaffolded Item…</p>
+
+<p>b.  Choose “MVC 5 Controller with views, using Entity Framework”. Click Add</p>
+
+<p>c.  For the Model class, choose HelloWorld ([Project Name].Models)</p>
+
+<p>d.  For the Data context class, choose the data context you created earlier, AWEntities ([Project Name])</p>
+
+<p>e.  For the Controller name, HelloWorldController. Click Add</p>
+
+<ol>
+<li> You now have a Controller, Model and View. It’s time to get to work!</li>
+<li> Open up HelloWorldController.cs.</li>
+<li> Near the top of the file, add the using statements for Entity Framework exceptions:</li>
+</ol>
+
+<div class="highlight highlight-c#"><pre><span class="pl-k">using</span> System.Data.Entity.Core;</pre></div>
+
+<ol>
+<li> Add code to get people out of the AdventureWorks2012 database using Entity Framework:</li>
+</ol>
+
+<div class="highlight highlight-c#"><pre><span class="pl-k">private</span> List&lt;Autocomplete&gt; _GetPeople(<span class="pl-k">string</span> query)
+{
+    List&lt;Autocomplete&gt; people = <span class="pl-k">new</span> List&lt;Autocomplete&gt;();
+    <span class="pl-k">try</span>
+    {
+        <span class="pl-k">var</span> results = (<span class="pl-k">from</span> p <span class="pl-k">in</span> db.People
+                       <span class="pl-k">where</span> (p.FirstName + <span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span> + p.LastName).Contains(query)
+                       <span class="pl-k">orderby</span> p.FirstName,p.LastName
+                       <span class="pl-k">select</span> p).Take(<span class="pl-c1">10</span>).ToList();
+        <span class="pl-k">foreach</span> (<span class="pl-k">var</span> r <span class="pl-k">in</span> results)
+        {
+            <span class="pl-c">// create objects</span>
+            Autocomplete person = <span class="pl-k">new</span> Autocomplete();
+
+            person.Name = <span class="pl-k">string</span>.Format(<span class="pl-s"><span class="pl-pds">"</span>{0} {1}<span class="pl-pds">"</span></span>, r.FirstName, r.LastName);
+            person.Id = r.PersonId;
+            people.Add(person);
+        }
+
+    }
+    <span class="pl-k">catch</span> (EntityCommandExecutionException eceex)
+    {
+        <span class="pl-k">if</span> (eceex.InnerException != <span class="pl-c1">null</span>)
+        {
+            <span class="pl-k">throw</span> eceex.InnerException;
+        }
+        <span class="pl-k">throw</span>;
+    }
+    <span class="pl-k">catch</span>
+    {
+        <span class="pl-k">throw</span>;
+    }
+    <span class="pl-k">return</span> people;
+}
+
+<span class="pl-c1">9</span>.  Add code to <span class="pl-k">return</span> the people <span class="pl-k">in</span> JSON format:
+
+````c#
+        <span class="pl-k">public</span> ActionResult GetPeople(<span class="pl-k">string</span> query)
+        {
+            <span class="pl-k">return</span> Json(_GetPeople(query), JsonRequestBehavior.AllowGet);
+        }</pre></div>
+
+<ol>
+<li>Add a using statement after the <a href="https://github.com/model" class="user-mention">@model</a> line at the top of the file so our HtmlHelper is available in the View:</li>
+</ol>
+
+<p><a href="https://github.com/using" class="user-mention">@using</a> WebApplication2.Models</p>
+
+<ol>
+<li><p>Since we are hiding the PersonId, we can remove the following code from the View:</p></li>
+<li><p>For model.Name, we need to change the control from EditorFor to AutocompleteFor. We also need to specify the key field, the method that Typeahead will call to get the people. The last parameter is false which will not have this field get the focus when the page is opened.</p></li>
+</ol>
+
+<p>@Html.AutocompleteFor(model =&gt; model.Name, model =&gt; model.PersonId, "GetPeople", "HelloWorld", false)</p>
+
+<ol>
+<li><p>In HelloWorldController, set a breakpoint in the second Create() (under the [HttpPost] declaration) to inspect the results returned from web page after we test out Typeahead</p></li>
+<li><p>Set a breakpoint on the first line in the Create() method (underneath the HttpPost() declaration)</p></li>
+<li><p>Go back to Create.cshtml and hit F5 to test things out</p></li>
+<li><p>For Message, type “Hello World!”</p></li>
+<li><p>For Name, type “Anna.”  It might take a second or two but the list will populate with the top 10 matches. Choose “Anna Albright”</p></li>
+<li><p>Notice that, in your breakpoint, if you expand “helloWorld”, that PersonId is automatically set to 325.  Neat, huh?</p></li>
+<li><p>I will leave it to you to implement writing helloWorld back at to a database.  This is an example after all </p></li>
+</ol>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/timdwilson/typeahead-mvc-model/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/timdwilson/typeahead-mvc-model/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/timdwilson/typeahead-mvc-model"></a> is maintained by <a href="https://github.com/timdwilson">timdwilson</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
