@@ -106,11 +106,11 @@ c.	For the Model class, choose HelloWorld ([Project Name].Models). For the Data 
 
 7.	Near the top of the file, add the using statements for Entity Framework exceptions:
 
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/entity_core.png)
+
 ````c#
 using System.Data.Entity.Core;
 ````
-
-![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/entity_core.png)
 
 8.	Add code to get people out of the AdventureWorks2012 database using Entity Framework:
 
@@ -162,11 +162,11 @@ private List<Autocomplete> _GetPeople(string query)
         
 10.	Add a using statement after the @model line at the top of the file so our HtmlHelper is available in the View:
 
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/cshtml_using.png)
+
 ````html
 @using WebApplication2.Models
 ````
-
-![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/cshtml_using.png)
 
 11.	Since we are hiding the PersonId, we can remove the following code from the View:
 
@@ -174,11 +174,11 @@ private List<Autocomplete> _GetPeople(string query)
 
 12.	We need to change the control from EditorFor to AutocompleteFor. We also need to specify the property name, property key field, the method that Typeahead will call to get the lookup values and keys. The last parameter is false which will keep this field from stealing the focus when the page is loaded.
 
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/autocompletefor.png)
+
 ````html
 @Html.AutocompleteFor(model => model.Name, model => model.PersonId, "GetPeople", "HelloWorld", false)
 ````
-
-![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/autocompletefor.png)
 
 13.	In HelloWorldController, set a breakpoint in the second Create() (under the [HttpPost] declaration) to inspect the results returned from web page after we test out Typeahead
 
