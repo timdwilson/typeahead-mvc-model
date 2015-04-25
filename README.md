@@ -9,25 +9,25 @@ How to Setup Twitter Typeahead.js to work with MVC Models
 
 1.	Edit ~\Views\Shared\_Layout.cshtml to load the typeahead.js bundle, Typeahead stylesheet and javascript that connects Typeahead to your MVC 5 model
 
-a.	Add the line to load the Typeahead stylesheet
-In ~\Views\Shared\_Layout.cshtml, add the following line before the close of the head tag:
+	a.	Add the line to load the Typeahead stylesheet
+	In ~\Views\Shared\_Layout.cshtml, add the following line before the close of the head tag:
 
-![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/typeahead_css.png)
+	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/typeahead_css.png)
 
-````html
-<link rel="stylesheet" type="text/css" href="~/Content/typeahead.css" />
-````
+	````html
+	<link rel="stylesheet" type="text/css" href="~/Content/typeahead.css" />
+	````
 
-b.	Add the line to load the Typeahead MVC bundle javascript and Typeahead MVC Model javascript (that connects Typeahead to your MVC model):
+	b.	Add the line to load the Typeahead MVC bundle javascript and Typeahead MVC Model javascript (that connects Typeahead to your MVC model):
 
-In ~\Views\Shared\_Layout.cshtml, add the following line after jquery and bootstrap are both loaded:
+	In ~\Views\Shared\_Layout.cshtml, add the following line after jquery and bootstrap are both loaded:
 
-![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/typeahead_bundle.png)
+	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/typeahead_bundle.png)
 
-````html
-    @Scripts.Render("~/bundles/typeahead")
-    <script src="~/Scripts/typeahead.mvc.model.js" />
-````    
+	````html
+		@Scripts.Render("~/bundles/typeahead")
+		<script src="~/Scripts/typeahead.mvc.model.js" />
+	````    
     
 2.	Add a new Model to your project
 
