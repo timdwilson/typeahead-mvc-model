@@ -9,16 +9,16 @@ How to Setup Twitter Typeahead.js to work with MVC Models
 
 1.	Edit ~\Views\Shared\_Layout.cshtml to load the typeahead.js bundle, Typeahead stylesheet and javascript that connects Typeahead to your MVC 5 model
 
-    a.	Add the line to load the Typeahead stylesheet
+a.	Add the line to load the Typeahead stylesheet
 In ~\Views\Shared\_Layout.cshtml, add the following line before the close of the head tag:
 
 ````html
 <link rel="stylesheet" type="text/css" href="~/Content/typeahead.css" />
 ````
 
-    b.	Add the line to load the Typeahead MVC bundle javascript and Typeahead MVC Model javascript (that connects Typeahead to your MVC model):
+b.	Add the line to load the Typeahead MVC bundle javascript and Typeahead MVC Model javascript (that connects Typeahead to your MVC model):
 
-    In ~\Views\Shared\_Layout.cshtml, add the following line after jquery and bootstrap are both loaded:
+In ~\Views\Shared\_Layout.cshtml, add the following line after jquery and bootstrap are both loaded:
 
 ''''html
     @Scripts.Render("~/bundles/typeahead")
@@ -27,11 +27,11 @@ In ~\Views\Shared\_Layout.cshtml, add the following line before the close of the
     
 2.	Add a new Model to your project
 
-    a.	Right-click on the Models folder and choose Add > New Item…
+a.	Right-click on the Models folder and choose Add > New Item…
 
-    b.	For the Name, type HelloWorld.cs and click Add
+b.	For the Name, type HelloWorld.cs and click Add
 
-    c.	In the Editor, add 3 new properties to the class. Hit F6 to Save and Build your project
+c.	In the Editor, add 3 new properties to the class. Hit F6 to Save and Build your project
 
 ''''c#
         public int HelloWorldId { get; set; }
@@ -78,50 +78,57 @@ e.	For the Controller name, HelloWorldController. Click Add
 6.	Open up HelloWorldController.cs.
 7.	Near the top of the file, add the using statements for Entity Framework exceptions:
 
+````c#
 using System.Data.Entity.Core;
+````
 
 8.	Add code to get people out of the AdventureWorks2012 database using Entity Framework:
-        private List<Autocomplete> _GetPeople(string query)
+
+````c#
+private List<Autocomplete> _GetPeople(string query)
+{
+    List<Autocomplete> people = new List<Autocomplete>();
+    try
+    {
+        var results = (from p in db.People
+                       where (p.FirstName + " " + p.LastName).Contains(query)
+                       orderby p.FirstName,p.LastName
+                       select p).Take(10).ToList();
+        foreach (var r in results)
         {
-            List<Autocomplete> people = new List<Autocomplete>();
-            try
-            {
-                var results = (from p in db.People
-                               where (p.FirstName + " " + p.LastName).Contains(query)
-                               orderby p.FirstName,p.LastName
-                               select p).Take(10).ToList();
-                foreach (var r in results)
-                {
-                    // create objects
-                    Autocomplete person = new Autocomplete();
+            // create objects
+            Autocomplete person = new Autocomplete();
 
-                    person.Name = string.Format("{0} {1}", r.FirstName, r.LastName);
-                    person.Id = r.PersonId;
-
-                    people.Add(person);
-                }
-
-            }
-            catch (EntityCommandExecutionException eceex)
-            {
-                if (eceex.InnerException != null)
-                {
-                    throw eceex.InnerException;
-                }
-                throw;
-            }
-            catch
-            {
-                throw;
-            }
-            return people;
+            person.Name = string.Format("{0} {1}", r.FirstName, r.LastName);
+            person.Id = r.PersonId;
+            people.Add(person);
         }
 
+    }
+    catch (EntityCommandExecutionException eceex)
+    {
+        if (eceex.InnerException != null)
+        {
+            throw eceex.InnerException;
+        }
+        throw;
+    }
+    catch
+    {
+        throw;
+    }
+    return people;
+}
+
 9.	Add code to return the people in JSON format:
+
+````c#
         public ActionResult GetPeople(string query)
         {
             return Json(_GetPeople(query), JsonRequestBehavior.AllowGet);
         }
+````        
+        
 10.	Add a using statement after the @model line at the top of the file so our HtmlHelper is available in the View:
 
 @using WebApplication2.Models
