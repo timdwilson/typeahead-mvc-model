@@ -40,14 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Controllers\HtmlHelpers.cs.pp" />
-    <None Include="LICENSE" />
     <None Include="Models\Autocomplete.cs.pp" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\typeahead.css" />
-    <Content Include="doc\images\typeahead_css.jpg" />
     <Content Include="Scripts\typeahead.mvc.model.js" />
   </ItemGroup>
   <ItemGroup>

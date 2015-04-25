@@ -5,6 +5,17 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeaheadMvcModel", "TypeaheadMvcModel\TypeaheadMvcModel.csproj", "{0AD11738-FFF4-41A2-AC56-086837BC60C0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{6D3AD778-C9B2-4BA4-8852-38E871A7E32A}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{CA45E586-9601-4B77-8A1A-AF96306A2F24}"
+	ProjectSection(SolutionItems) = preProject
+		doc\images\typeahead_css.jpg = doc\images\typeahead_css.jpg
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +29,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CA45E586-9601-4B77-8A1A-AF96306A2F24} = {6D3AD778-C9B2-4BA4-8852-38E871A7E32A}
 	EndGlobalSection
 EndGlobal
