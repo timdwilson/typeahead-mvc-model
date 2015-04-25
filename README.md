@@ -33,7 +33,7 @@ b.	For the Name, type HelloWorld.cs and click Add
 
 c.	In the Editor, add 3 new properties to the class. Hit F6 to Save and Build your project
 
-''''c#
+````c#
         public int HelloWorldId { get; set; }
         public string Message { get; set; }
         public string Person { get; set; }
@@ -119,6 +119,7 @@ private List<Autocomplete> _GetPeople(string query)
     }
     return people;
 }
+````
 
 9.	Add code to return the people in JSON format:
 
@@ -131,13 +132,17 @@ private List<Autocomplete> _GetPeople(string query)
         
 10.	Add a using statement after the @model line at the top of the file so our HtmlHelper is available in the View:
 
+````html
 @using WebApplication2.Models
+````
 
 11.	Since we are hiding the PersonId, we can remove the following code from the View:
 
 12.	For model.Name, we need to change the control from EditorFor to AutocompleteFor. We also need to specify the key field, the method that Typeahead will call to get the people. The last parameter is false which will not have this field get the focus when the page is opened.
 
+````html
 @Html.AutocompleteFor(model => model.Name, model => model.PersonId, "GetPeople", "HelloWorld", false)
+````
 
 13.	In HelloWorldController, set a breakpoint in the second Create() (under the [HttpPost] declaration) to inspect the results returned from web page after we test out Typeahead
 
@@ -151,7 +156,4 @@ private List<Autocomplete> _GetPeople(string query)
 
 18.	Notice that, in your breakpoint, if you expand “helloWorld”, that PersonId is automatically set to 325.  Neat, huh?
 
-19.	I will leave it to you to implement writing helloWorld back at to a database.  This is an example after all 
-
-
-
+19.	I will leave it to you to implement writing helloWorld back at to a database.  This is an example after all :)
