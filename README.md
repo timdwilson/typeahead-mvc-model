@@ -9,34 +9,36 @@ How to Setup Twitter Typeahead.js to work with MVC Models
 
 1.	Edit ~\Views\Shared\_Layout.cshtml to load the typeahead.js bundle, Typeahead stylesheet and javascript that connects Typeahead to your MVC 5 model
 
-a.	Add the line to load the Typeahead stylesheet
+    a.	Add the line to load the Typeahead stylesheet
 In ~\Views\Shared\_Layout.cshtml, add the following line before the close of the head tag:
 
 ````html
 <link rel="stylesheet" type="text/css" href="~/Content/typeahead.css" />
 ````
 
-b.	Add the line to load the Typeahead MVC bundle javascript and Typeahead MVC Model javascript (that connects Typeahead to your MVC model):
+    b.	Add the line to load the Typeahead MVC bundle javascript and Typeahead MVC Model javascript (that connects Typeahead to your MVC model):
 
-In ~\Views\Shared\_Layout.cshtml, add the following line after jquery and bootstrap are both loaded:
+    In ~\Views\Shared\_Layout.cshtml, add the following line after jquery and bootstrap are both loaded:
 
-''''razor
+''''html
     @Scripts.Render("~/bundles/typeahead")
     <script src="~/Scripts/typeahead.mvc.model.js" />
 ````    
     
 2.	Add a new Model to your project
 
-a.	Right-click on the Models folder and choose Add > New Item…
+    a.	Right-click on the Models folder and choose Add > New Item…
 
-b.	For the Name, type HelloWorld.cs and click Add
+    b.	For the Name, type HelloWorld.cs and click Add
 
-c.	In the Editor, add 3 new properties to the class. Hit F6 to Save and Build your project
+    c.	In the Editor, add 3 new properties to the class. Hit F6 to Save and Build your project
 
+''''c#
         public int HelloWorldId { get; set; }
         public string Message { get; set; }
         public string Person { get; set; }
         public int PersonId { get; set; }
+````
 
 3.	Add the Entity Framework for AdventureWorks2012 to your project.
 
