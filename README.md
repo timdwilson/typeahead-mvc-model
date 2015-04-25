@@ -198,3 +198,4 @@ How to Setup Twitter Typeahead.js to work with MVC Models
 
 Download this example application below:
 
+https://github.com/timdwilson/typeahead-mvc-model/blob/master/example/TypeaheadMvcModelExampleApp.zip?raw=true
