@@ -178,7 +178,7 @@ private List<Autocomplete> _GetPeople(string query)
 @Html.AutocompleteFor(model => model.Name, model => model.PersonId, "GetPeople", "HelloWorld", false)
 ````
 
-![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/autocomplete_for.png)
+![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/autocompletefor.png)
 
 13.	In HelloWorldController, set a breakpoint in the second Create() (under the [HttpPost] declaration) to inspect the results returned from web page after we test out Typeahead
 
