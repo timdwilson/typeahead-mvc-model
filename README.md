@@ -4,16 +4,27 @@ Extends Twitter's typeahead.js to work with MVC 5 models
 This package extends upon the Twitter.Typeahead library and the Twitter.Typeahead.MVC library by hooking typeahead to MVC models. With a few configuration tweaks, you'll be connecting typeahead.js to your model in minutes!
 
 How to Setup Twitter Typeahead.js to work with MVC Models
+
 (Note: to use the Entity Framework queries in this document, you will need to install the Adventure Works database from here: https://msftdbprodsamples.codeplex.com/releases/view/55330. If you don’t need to connect to a database or have a database connection, skip ahead.  Likewise, if you already have a model you would like to connect to typeahead, skip right ahead.)
+
 1.	Edit ~\Views\Shared\_Layout.cshtml to load the typeahead.js bundle, Typeahead stylesheet and javascript that connects Typeahead to your MVC 5 model
+
 a.	Add the line to load the Typeahead stylesheet
 In ~\Views\Shared\_Layout.cshtml, add the following line before the close of the head tag:
+
+````html
 <link rel="stylesheet" type="text/css" href="~/Content/typeahead.css" />
+````
 
 b.	Add the line to load the Typeahead MVC bundle javascript and Typeahead MVC Model javascript (that connects Typeahead to your MVC model):
+
 In ~\Views\Shared\_Layout.cshtml, add the following line after jquery and bootstrap are both loaded:
+
+''''cshtml
     @Scripts.Render("~/bundles/typeahead")
     <script src="~/Scripts/typeahead.mvc.model.js" />
+````    
+    
 2.	Add a new Model to your project
 
 a.	Right-click on the Models folder and choose Add > New Item…
