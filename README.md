@@ -12,6 +12,8 @@ How to Setup Twitter Typeahead.js to work with MVC Models
 a.	Add the line to load the Typeahead stylesheet
 In ~\Views\Shared\_Layout.cshtml, add the following line before the close of the head tag:
 
+![Alt text](https://github.com/timdwilson/typeahead-mvc-model/master/doc/images/typeahead_css.jpg)
+
 ````html
 <link rel="stylesheet" type="text/css" href="~/Content/typeahead.css" />
 ````
