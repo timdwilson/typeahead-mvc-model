@@ -7,7 +7,7 @@ Here's a screenshot of Typeahead connected to an MVC model below (the rest of th
 
 ![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/preview.png)
 
-How to Setup Twitter Typeahead.js to work with MVC Models
+# How to Setup Twitter Typeahead.js to work with MVC Models
 
 (Note: to use the Entity Framework queries in this document, you will need to install the Adventure Works database from here: https://msftdbprodsamples.codeplex.com/releases/view/55330. If you don’t need to connect to a database or have a database connection, skip ahead.  Likewise, if you already have a model you would like to connect to typeahead, skip right ahead. Finally, you can download the full source code  of this example application, including the solution file, at the bottom of this page.)
 
@@ -52,7 +52,7 @@ How to Setup Twitter Typeahead.js to work with MVC Models
 			public int PersonId { get; set; }
 	````
 
-3.	Add the Entity Framework for AdventureWorks2012 to your project.
+3. Add the Entity Framework for AdventureWorks2012 to your project.
 
 	a.	Right-click on your project and choose Add > New Item…
 
@@ -104,102 +104,126 @@ How to Setup Twitter Typeahead.js to work with MVC Models
 
 	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/add_controller.png)
 
-5.	You now have a Controller, Model and View. It’s time to get to work!
+*You now have a Controller, Model and View. It’s time to get to work!*
 
-6.	Open up HelloWorldController.cs.
+5.	Add code to the HelloWorldController to get people from the database
 
-7.	Near the top of the file, add the using statements for Entity Framework exceptions:
+	a.	Open up HelloWorldController.cs
 
-	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/entity_core.png)
+	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/helloworldcontroller_cs.png)
 
-	````c#
-	using System.Data.Entity.Core;
-	````
+	b.	Near the top of the file, add the using statements for Entity Framework exceptions:
 
-8.	Add code to get people out of the AdventureWorks2012 database using Entity Framework:
+		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/entity_core.png)
 
-	````c#
-	private List<Autocomplete> _GetPeople(string query)
-	{
-		List<Autocomplete> people = new List<Autocomplete>();
-		try
+		````c#
+		using System.Data.Entity.Core;
+		````
+
+	c.	Add code to get people out of the AdventureWorks2012 database using Entity Framework:
+
+		````c#
+		private List<Autocomplete> _GetPeople(string query)
 		{
-			var results = (from p in db.People
-						   where (p.FirstName + " " + p.LastName).Contains(query)
-						   orderby p.FirstName,p.LastName
-						   select p).Take(10).ToList();
-			foreach (var r in results)
+			List<Autocomplete> people = new List<Autocomplete>();
+			try
 			{
-				// create objects
-				Autocomplete person = new Autocomplete();
+				var results = (from p in db.People
+							   where (p.FirstName + " " + p.LastName).Contains(query)
+							   orderby p.FirstName,p.LastName
+							   select p).Take(10).ToList();
+				foreach (var r in results)
+				{
+					// create objects
+					Autocomplete person = new Autocomplete();
 
-				person.Name = string.Format("{0} {1}", r.FirstName, r.LastName);
-				person.Id = r.PersonId;
-				people.Add(person);
+					person.Name = string.Format("{0} {1}", r.FirstName, r.LastName);
+					person.Id = r.PersonId;
+					people.Add(person);
+				}
+
 			}
-
+			catch (EntityCommandExecutionException eceex)
+			{
+				if (eceex.InnerException != null)
+				{
+					throw eceex.InnerException;
+				}
+				throw;
+			}
+			catch
+			{
+				throw;
+			}
+			return people;
 		}
-		catch (EntityCommandExecutionException eceex)
+		````
+
+	d.	Add code to return the people in JSON format:
+
+		````c#
+		public ActionResult GetPeople(string query)
 		{
-			if (eceex.InnerException != null)
-			{
-				throw eceex.InnerException;
-			}
-			throw;
+			return Json(_GetPeople(query), JsonRequestBehavior.AllowGet);
 		}
-		catch
-		{
-			throw;
-		}
-		return people;
-	}
-	````
-
-9.	Add code to return the people in JSON format:
-
-	````c#
-			public ActionResult GetPeople(string query)
-			{
-				return Json(_GetPeople(query), JsonRequestBehavior.AllowGet);
-			}
-	````        
+		````        
         
-10.	Add a using statement after the @model line at the top of the file so our HtmlHelper is available in the View:
+6. Add the Autocomplete (textahead) control to the Create view for the HelloWorld model
 
-	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/cshtml_using.png)
+	a. Open up ~\Views\HelloWorld\Create.cshtml.
 
-	````html
-	@using WebApplication2.Models
-	````
+	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/create_cshtml.png)
 
-11.	Since we are hiding the PersonId, we can remove the following code from the View:
+	b. Add a using statement after the @model line at the top of the file so our HtmlHelper is available in the View:
 
-	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/remove.png)
+		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/cshtml_using.png)
 
-12.	We need to change the control from EditorFor to AutocompleteFor. We also need to specify the property name, property key field, the method that Typeahead will call to get the lookup values and keys. The last parameter is false which will keep this field from stealing the focus when the page is loaded.
+		````html
+		@using WebApplication2.Models
+		````
 
-	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/autocompletefor.png)
+	c.	Since we are hiding the PersonId, we can remove the following code from the View:
 
-	````html
-	@Html.AutocompleteFor(model => model.Name, model => model.PersonId, "GetPeople", "HelloWorld", false)
-	````
+		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/remove.png)
 
-13.	In HelloWorldController, set a breakpoint in the second Create() (under the [HttpPost] declaration) to inspect the results returned from web page after we test out Typeahead
+	d.	Add the PersonId property to the view, yet hide it. This property will be auto-populated by javascript after the user selects a typeahead value
 
-	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/breakpoint.png)
+		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/hidden_personid.png)
 
-14.	Go back to Create.cshtml and hit F5 to test things out
+		````
+		@Html.HiddenFor(model => model.PersonId)
+		````
 
-15.	For Message, type “Hello World!” For Name, type “Anna.”  It might take a second or two but the list will populate with the top 10 matches. Choose “Anna Albright”
+	e.	We need to change the control from EditorFor to AutocompleteFor. We also need to specify the property name, property key field, the method that Typeahead will call to get the lookup values and keys. The last parameter is false which will keep this field from stealing the focus when the page is loaded.
 
-	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/preview.png)
+		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/autocompletefor.png)
 
-17.	Notice that, in your breakpoint, if you expand “helloWorld”, that PersonId is automatically set to 325.  Neat, huh?
+		````html
+		@Html.AutocompleteFor(model => model.Name, model => model.PersonId, "GetPeople", "HelloWorld", false)
+		````
 
-	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/watch.png)
+7.	Test things out to see how they work
 
-18.	I will leave it to you to implement writing helloWorld back at to a database.  This is an example after all :)
+	a.	In HelloWorldController, set a breakpoint in the second Create() (under the [HttpPost] declaration) to inspect the results returned from web page after we test out Typeahead
 
-Download this example application below:
+		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/breakpoint.png)
+
+	b.	Open up Create.cshtml again and hit F5 to test things out
+
+	c.	For Message, type “Hello World!” For Name, type “Anna.” It might take a second or two but the list will populate with the top 10 matches. Choose “Anna Albright” Click Create
+
+		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/preview.png)
+
+	d. This should hit the breakpoint you set on Create()
+
+		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/breakpoint_hit.png)
+
+	e.	Notice that, in your breakpoint, if you expand “helloWorld”, that PersonId is automatically set to 325. Neat, huh?
+
+		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/watch.png)
+
+* I will leave it to you to implement writing helloWorld back at to a database. This is an example after all :) Happy coding! *
+
+# Download this example application below:
 
 https://github.com/timdwilson/typeahead-mvc-model/blob/master/example/TypeaheadMvcModelExampleApp.zip?raw=true
