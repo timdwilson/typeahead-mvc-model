@@ -129,9 +129,9 @@ Here's a screenshot of Typeahead connected to an MVC model in action (the rest o
 			try
 			{
 				var results = (from p in db.People
-							   where (p.FirstName + " " + p.LastName).Contains(query)
-							   orderby p.FirstName,p.LastName
-							   select p).Take(10).ToList();
+								where (p.FirstName + " " + p.LastName).Contains(query)
+								orderby p.FirstName,p.LastName
+								select p).Take(10).ToList();
 				foreach (var r in results)
 				{
 					// create objects
