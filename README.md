@@ -3,7 +3,7 @@ Extends Twitter's typeahead.js to work with MVC 5 models
 
 This package extends upon the Twitter.Typeahead library and the Twitter.Typeahead.MVC library by hooking typeahead to MVC models. With a few configuration tweaks, you'll be connecting typeahead.js to your model in minutes!
 
-Here's a screenshot of Typeahead connected to an MVC model below (the rest of this README walks you through creating this example):
+Here's a screenshot of Typeahead connected to an MVC model in action (the rest of this README walks you through creating this example):
 
 ![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/preview.png)
 
