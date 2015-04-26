@@ -224,5 +224,5 @@ Here's a screenshot of Typeahead connected to an MVC model in action (the rest o
 
 **I will leave it to you to implement writing helloWorld back at to a database. This is an example after all :) Happy coding!**
 
-#[Download](https://github.com/timdwilson/typeahead-mvc-model/blob/master/example/TypeaheadMvcModelExampleApp.zip?raw=true) the example application.
+##[Download](https://github.com/timdwilson/typeahead-mvc-model/blob/master/example/TypeaheadMvcModelExampleApp.zip?raw=true) the example application.
 
