@@ -114,59 +114,59 @@ Here's a screenshot of Typeahead connected to an MVC model in action (the rest o
 
 	b.	Near the top of the file, add the using statements for Entity Framework exceptions:
 
-		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/entity_core.png)
+	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/entity_core.png)
 
-		````c#
-		using System.Data.Entity.Core;
-		````
+	````c#
+	using System.Data.Entity.Core;
+	````
 
 	c.	Add code to get people out of the AdventureWorks2012 database using Entity Framework:
 
-		````c#
-		private List<Autocomplete> _GetPeople(string query)
+	````c#
+	private List<Autocomplete> _GetPeople(string query)
+	{
+		List<Autocomplete> people = new List<Autocomplete>();
+		try
 		{
-			List<Autocomplete> people = new List<Autocomplete>();
-			try
+			var results = (from p in db.People
+							where (p.FirstName + " " + p.LastName).Contains(query)
+							orderby p.FirstName,p.LastName
+							select p).Take(10).ToList();
+			foreach (var r in results)
 			{
-				var results = (from p in db.People
-								where (p.FirstName + " " + p.LastName).Contains(query)
-								orderby p.FirstName,p.LastName
-								select p).Take(10).ToList();
-				foreach (var r in results)
-				{
-					// create objects
-					Autocomplete person = new Autocomplete();
+				// create objects
+				Autocomplete person = new Autocomplete();
 
-					person.Name = string.Format("{0} {1}", r.FirstName, r.LastName);
-					person.Id = r.PersonId;
-					people.Add(person);
-				}
+				person.Name = string.Format("{0} {1}", r.FirstName, r.LastName);
+				person.Id = r.PersonId;
+				people.Add(person);
+			}
 
-			}
-			catch (EntityCommandExecutionException eceex)
-			{
-				if (eceex.InnerException != null)
-				{
-					throw eceex.InnerException;
-				}
-				throw;
-			}
-			catch
-			{
-				throw;
-			}
-			return people;
 		}
-		````
+		catch (EntityCommandExecutionException eceex)
+		{
+			if (eceex.InnerException != null)
+			{
+				throw eceex.InnerException;
+			}
+			throw;
+		}
+		catch
+		{
+			throw;
+		}
+		return people;
+	}
+	````
 
 	d.	Add code to return the people in JSON format:
 
-		````c#
-		public ActionResult GetPeople(string query)
-		{
-			return Json(_GetPeople(query), JsonRequestBehavior.AllowGet);
-		}
-		````        
+	````c#
+	public ActionResult GetPeople(string query)
+	{
+		return Json(_GetPeople(query), JsonRequestBehavior.AllowGet);
+	}
+	````        
         
 6. Add the Autocomplete (textahead) control to the Create view for the HelloWorld model
 
@@ -176,51 +176,51 @@ Here's a screenshot of Typeahead connected to an MVC model in action (the rest o
 
 	b. Add a using statement after the @model line at the top of the file so our HtmlHelper is available in the View:
 
-		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/cshtml_using.png)
+	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/cshtml_using.png)
 
-		````html
-		@using WebApplication2.Models
-		````
+	````html
+	@using WebApplication2.Models
+	````
 
 	c.	Since we are hiding the PersonId, we can remove the following code from the View:
 
-		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/remove.png)
+	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/remove.png)
 
 	d.	Add the PersonId property to the view, yet hide it. This property will be auto-populated by javascript after the user selects a typeahead value
 
-		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/hidden_personid.png)
+	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/hidden_personid.png)
 
-		````
-		@Html.HiddenFor(model => model.PersonId)
-		````
+	````
+	@Html.HiddenFor(model => model.PersonId)
+	````
 
 	e.	We need to change the control from EditorFor to AutocompleteFor. We also need to specify the property name, property key field, the method that Typeahead will call to get the lookup values and keys. The last parameter is false which will keep this field from stealing the focus when the page is loaded.
 
-		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/autocompletefor.png)
+	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/autocompletefor.png)
 
-		````html
-		@Html.AutocompleteFor(model => model.Name, model => model.PersonId, "GetPeople", "HelloWorld", false)
-		````
+	````html
+	@Html.AutocompleteFor(model => model.Name, model => model.PersonId, "GetPeople", "HelloWorld", false)
+	````
 
 7.	Test things out to see how they work
 
 	a.	In HelloWorldController, set a breakpoint in the second Create() (under the [HttpPost] declaration) to inspect the results returned from web page after we test out Typeahead
 
-		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/breakpoint.png)
+	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/breakpoint.png)
 
 	b.	Open up Create.cshtml again and hit F5 to test things out
 
 	c.	For Message, type “Hello World!” For Name, type “Anna.” It might take a second or two but the list will populate with the top 10 matches. Choose “Anna Albright” Click Create
 
-		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/preview.png)
+	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/preview.png)
 
 	d. This should hit the breakpoint you set on Create()
 
-		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/breakpoint_hit.png)
+	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/breakpoint_hit.png)
 
 	e.	Notice that, in your breakpoint, if you expand “helloWorld”, that PersonId is automatically set to 325. Neat, huh?
 
-		![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/watch.png)
+	![Alt text](https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/watch.png)
 
 **I will leave it to you to implement writing helloWorld back at to a database. This is an example after all :) Happy coding!**
 
