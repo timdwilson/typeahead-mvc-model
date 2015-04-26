@@ -39,9 +39,10 @@
 
 <p><img src="https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/preview.png" alt="Alt text"></p>
 
-<p>How to Setup Twitter Typeahead.js to work with MVC Models</p>
+<h1>
+<a id="how-to-setup-twitter-typeaheadjs-to-work-with-mvc-models" class="anchor" href="#how-to-setup-twitter-typeaheadjs-to-work-with-mvc-models" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to Setup Twitter Typeahead.js to work with MVC Models</h1>
 
-<p>(Note: to use the Entity Framework queries in this document, you will need to install the Adventure Works database from here: <a href="https://msftdbprodsamples.codeplex.com/releases/view/55330">https://msftdbprodsamples.codeplex.com/releases/view/55330</a>. If you don’t need to connect to a database or have a database connection, skip ahead.  Likewise, if you already have a model you would like to connect to typeahead, skip right ahead. Finally, you can download the full source code  of this example application, including the solution file, at the bottom of this page.)</p>
+<p><em>(Note: to use the Entity Framework queries in this document, you will need to install the Adventure Works database from <a href="https://msftdbprodsamples.codeplex.com/releases/view/55330">CodePlex</a>. If you don’t need to connect to a database or have a database connection, skip ahead.  Likewise, if you already have a model you would like to connect to typeahead, skip right ahead. Finally, you can download the full source code  of this example application, including the solution file, at the bottom of this page.)</em></p>
 
 <ol>
 <li>
@@ -134,18 +135,23 @@ In ~\Views\Shared_Layout.cshtml, add the following line before the close of the 
 <p>c.  For the Model class, choose HelloWorld ([Project Name].Models). For the Data context class, choose the data context you created earlier, AWEntities ([Project Name]). For the Controller name, HelloWorldController. Click Add</p>
 
 <p><img src="https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/add_controller.png" alt="Alt text"></p>
+
+<p><em>You now have a Controller, Model and View. It’s time to get to work!</em></p>
 </li>
-<li><p>You now have a Controller, Model and View. It’s time to get to work!</p></li>
-<li><p>Open up HelloWorldController.cs.</p></li>
 <li>
-<p>Near the top of the file, add the using statements for Entity Framework exceptions:</p>
+<p>Add code to the HelloWorldController to get people from the database</p>
+
+<p>a.  Open up HelloWorldController.cs</p>
+
+<p><img src="https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/helloworldcontroller_cs.png" alt="Alt text"></p>
+
+<p>b.  Near the top of the file, add the using statements for Entity Framework exceptions:</p>
 
 <p><img src="https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/entity_core.png" alt="Alt text"></p>
 
 <div class="highlight highlight-c#"><pre><span class="pl-k">using</span> System.Data.Entity.Core;</pre></div>
-</li>
-<li>
-<p>Add code to get people out of the AdventureWorks2012 database using Entity Framework:</p>
+
+<p>c.  Add code to get people out of the AdventureWorks2012 database using Entity Framework:</p>
 
 <div class="highlight highlight-c#"><pre><span class="pl-k">private</span> List&lt;Autocomplete&gt; _GetPeople(<span class="pl-k">string</span> query)
 {
@@ -153,9 +159,9 @@ In ~\Views\Shared_Layout.cshtml, add the following line before the close of the 
     <span class="pl-k">try</span>
     {
         <span class="pl-k">var</span> results = (<span class="pl-k">from</span> p <span class="pl-k">in</span> db.People
-                       <span class="pl-k">where</span> (p.FirstName + <span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span> + p.LastName).Contains(query)
-                       <span class="pl-k">orderby</span> p.FirstName,p.LastName
-                       <span class="pl-k">select</span> p).Take(<span class="pl-c1">10</span>).ToList();
+                        <span class="pl-k">where</span> (p.FirstName + <span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span> + p.LastName).Contains(query)
+                        <span class="pl-k">orderby</span> p.FirstName,p.LastName
+                        <span class="pl-k">select</span> p).Take(<span class="pl-c1">10</span>).ToList();
         <span class="pl-k">foreach</span> (<span class="pl-k">var</span> r <span class="pl-k">in</span> results)
         {
             <span class="pl-c">// create objects</span>
@@ -181,56 +187,72 @@ In ~\Views\Shared_Layout.cshtml, add the following line before the close of the 
     }
     <span class="pl-k">return</span> people;
 }</pre></div>
-</li>
-<li>
-<p>Add code to return the people in JSON format:</p>
 
-<div class="highlight highlight-c#"><pre>        <span class="pl-k">public</span> ActionResult GetPeople(<span class="pl-k">string</span> query)
-        {
-            <span class="pl-k">return</span> Json(_GetPeople(query), JsonRequestBehavior.AllowGet);
-        }</pre></div>
+<p>d.  Add code to return the people in JSON format:</p>
+
+<div class="highlight highlight-c#"><pre><span class="pl-k">public</span> ActionResult GetPeople(<span class="pl-k">string</span> query)
+{
+    <span class="pl-k">return</span> Json(_GetPeople(query), JsonRequestBehavior.AllowGet);
+}</pre></div>
 </li>
 <li>
-<p>Add a using statement after the <a href="https://github.com/model" class="user-mention">@model</a> line at the top of the file so our HtmlHelper is available in the View:</p>
+<p>Add the Autocomplete (textahead) control to the Create view for the HelloWorld model</p>
+
+<p>a. Open up ~\Views\HelloWorld\Create.cshtml.</p>
+
+<p><img src="https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/create_cshtml.png" alt="Alt text"></p>
+
+<p>b. Add a using statement after the <a href="https://github.com/model" class="user-mention">@model</a> line at the top of the file so our HtmlHelper is available in the View:</p>
 
 <p><img src="https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/cshtml_using.png" alt="Alt text"></p>
 
 <div class="highlight highlight-html"><pre>@using WebApplication2.Models</pre></div>
-</li>
-<li>
-<p>Since we are hiding the PersonId, we can remove the following code from the View:</p>
+
+<p>c.  Since we are hiding the PersonId, we can remove the following code from the View:</p>
 
 <p><img src="https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/remove.png" alt="Alt text"></p>
-</li>
-<li>
-<p>We need to change the control from EditorFor to AutocompleteFor. We also need to specify the property name, property key field, the method that Typeahead will call to get the lookup values and keys. The last parameter is false which will keep this field from stealing the focus when the page is loaded.</p>
+
+<p>d.  Add the PersonId property to the view, yet hide it. This property will be auto-populated by javascript after the user selects a typeahead value</p>
+
+<p><img src="https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/hidden_personid.png" alt="Alt text"></p>
+
+<pre><code>@Html.HiddenFor(model =&gt; model.PersonId)
+</code></pre>
+
+<p>e.  We need to change the control from EditorFor to AutocompleteFor. We also need to specify the property name, property key field, the method that Typeahead will call to get the lookup values and keys. The last parameter is false which will keep this field from stealing the focus when the page is loaded.</p>
 
 <p><img src="https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/autocompletefor.png" alt="Alt text"></p>
 
 <div class="highlight highlight-html"><pre>@Html.AutocompleteFor(model =&gt; model.Name, model =&gt; model.PersonId, "GetPeople", "HelloWorld", false)</pre></div>
 </li>
 <li>
-<p>In HelloWorldController, set a breakpoint in the second Create() (under the [HttpPost] declaration) to inspect the results returned from web page after we test out Typeahead</p>
+<p>Test things out to see how they work</p>
+
+<p>a.  In HelloWorldController, set a breakpoint in the second Create() (under the [HttpPost] declaration) to inspect the results returned from web page after we test out Typeahead</p>
 
 <p><img src="https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/breakpoint.png" alt="Alt text"></p>
-</li>
-<li><p>Go back to Create.cshtml and hit F5 to test things out</p></li>
-<li>
-<p>For Message, type “Hello World!” For Name, type “Anna.”  It might take a second or two but the list will populate with the top 10 matches. Choose “Anna Albright”</p>
+
+<p>b.  Open up Create.cshtml again and hit F5 to test things out</p>
+
+<p>c.  For Message, type “Hello World!” For Name, type “Anna.” It might take a second or two but the list will populate with the top 10 matches. Choose “Anna Albright” Click Create</p>
 
 <p><img src="https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/preview.png" alt="Alt text"></p>
-</li>
-<li>
-<p>Notice that, in your breakpoint, if you expand “helloWorld”, that PersonId is automatically set to 325.  Neat, huh?</p>
+
+<p>d. This should hit the breakpoint you set on Create()</p>
+
+<p><img src="https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/breakpoint_hit.png" alt="Alt text"></p>
+
+<p>e.  Notice that, in your breakpoint, if you expand “helloWorld”, that PersonId is automatically set to 325. Neat, huh?</p>
 
 <p><img src="https://raw.githubusercontent.com/timdwilson/typeahead-mvc-model/master/doc/images/watch.png" alt="Alt text"></p>
 </li>
-<li><p>I will leave it to you to implement writing helloWorld back at to a database.  This is an example after all :)</p></li>
 </ol>
 
-<p>Download this example application below:</p>
+<p><strong>I will leave it to you to implement writing helloWorld back at to a database. This is an example after all :) Happy coding!</strong></p>
 
-<p><a href="https://github.com/timdwilson/typeahead-mvc-model/blob/master/example/TypeaheadMvcModelExampleApp.zip?raw=true">https://github.com/timdwilson/typeahead-mvc-model/blob/master/example/TypeaheadMvcModelExampleApp.zip?raw=true</a></p>
+<h2>
+<a id="download-the-example-application" class="anchor" href="#download-the-example-application" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a href="https://github.com/timdwilson/typeahead-mvc-model/blob/master/example/TypeaheadMvcModelExampleApp.zip?raw=true">Download</a> the example application.</h2>
         </section>
 
         <aside id="sidebar">
