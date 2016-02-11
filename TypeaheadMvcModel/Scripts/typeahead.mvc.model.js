@@ -7,6 +7,7 @@
             },
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             remote: {
+                wildcard: "%QUERY",
                 url: $(obj).data("autocomplete-url") + "?query=%QUERY",
                 filter: function (autos) {
                     // Map the remote source JSON array to a JavaScript object array
