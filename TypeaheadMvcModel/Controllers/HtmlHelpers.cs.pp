@@ -94,7 +94,13 @@ namespace $rootnamespace$.Models
                             });
                         foreach (var pair2 in htmlAttributesPropertyNamesAndValues)
                         {
-                            ((IDictionary<string, object>) htmlAttributes).Add(pair2.Name, pair2.Value);
+                            var pair2Name = pair2.Name;
+							if (pair2Name.Contains("data_"))
+							{
+								var dataAttributeName = pair2.Name.Replace("data_", "data-");
+								pair2Name = dataAttributeName;
+							}
+                            ((IDictionary<string, object>) htmlAttributes).Add(pair2Name, pair2.Value);
                         }
                     }
                 }
