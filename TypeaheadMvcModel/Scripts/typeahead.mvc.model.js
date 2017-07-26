@@ -8,7 +8,7 @@
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             remote: {
                 wildcard: "%QUERY",
-                url: $(obj).data("autocomplete-url") + "?query=%QUERY",
+                url: (($(obj).data("autocomplete-url").indexOf("?") >= 0) ? $(obj).data("autocomplete-url") + "&query=%QUERY" : $(obj).data("autocomplete-url") + "?query=%QUERY"),
                 filter: function (autos) {
                     // Map the remote source JSON array to a JavaScript object array
                     return $.map(autos, function (auto) {
