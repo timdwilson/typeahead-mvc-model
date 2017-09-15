@@ -48,3 +48,12 @@
     max-height: 150px;
     overflow-y: auto;
 }
+
+
+.input-loading {
+    background-color: #ffffff;
+    background-image: url("http://loadinggif.com/images/image-selection/3.gif");
+    background-size: 25px 25px;
+    background-position: right center;
+    background-repeat: no-repeat;
+}
