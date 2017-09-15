@@ -99,7 +99,7 @@ namespace WebApplication2.Models
                 }
             }
             // add @class if it is not there yet
-            if (!((IDictionary<string, object>) htmlAttributes).ContainsKey("@class"))
+            if (!((IDictionary<string, object>) htmlAttributes).ContainsKey("class"))
             {
                 htmlAttributes.@class = "";
             }
