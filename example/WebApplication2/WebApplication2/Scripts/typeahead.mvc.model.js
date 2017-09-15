@@ -7,8 +7,8 @@
             },
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             remote: {
-                wildcard: "%QUERY",            
-                url: $(obj).data("autocomplete-url") + "?query=%QUERY",
+                wildcard: "%QUERY",
+                url: (($(obj).data("autocomplete-url").indexOf("?") >= 0) ? $(obj).data("autocomplete-url") + "&query=%QUERY" : $(obj).data("autocomplete-url") + "?query=%QUERY"),
                 filter: function (autos) {
                     // Map the remote source JSON array to a JavaScript object array
                     return $.map(autos, function (auto) {
@@ -28,7 +28,12 @@
             name: 'autos', displayKey: 'value', source: autos.ttAdapter()
         }).on('typeahead:selected', function (obj, datum) {
             onselected(obj, datum);
-        });
+            }).on('typeahead:asyncrequest', function () {
+                $('.typeahead').addClass('input-loading');
+            })
+            .on('typeahead:asynccancel typeahead:asyncreceive', function () {
+                $('.typeahead').removeClass('input-loading');
+            });
 
         if ($(obj).hasClass("focus")) {
             $(obj).focus();

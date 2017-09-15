@@ -28,7 +28,12 @@
             name: 'autos', displayKey: 'value', source: autos.ttAdapter()
         }).on('typeahead:selected', function (obj, datum) {
             onselected(obj, datum);
-        });
+            }).on('typeahead:asyncrequest', function () {
+                $('.typeahead').addClass('input-loading');
+            })
+            .on('typeahead:asynccancel typeahead:asyncreceive', function () {
+                $('.typeahead').removeClass('input-loading');
+            });
 
         if ($(obj).hasClass("focus")) {
             $(obj).focus();
