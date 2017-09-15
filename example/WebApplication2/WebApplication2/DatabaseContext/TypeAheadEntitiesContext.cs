@@ -11,9 +11,9 @@ namespace WebApplication2.DatabaseContext
         {
         }
         
-        public virtual DbSet<Models.Person> People { get; set; }
+        public virtual DbSet<Person> People { get; set; }
 
-        public DbSet<Models.HelloWorld> HelloWorlds { get; set; }
+        public DbSet<HelloWorld> HelloWorlds { get; set; }
 
         public void SeedIfEmpty()
         {
