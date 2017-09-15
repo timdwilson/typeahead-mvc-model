@@ -20,6 +20,8 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -167,25 +169,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\TypeaheadBundleConfig.cs" />
-    <Compile Include="AWModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AWModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AWModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AWModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AWModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AWModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HelloWorldController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HtmlHelpers.cs" />
+    <Compile Include="DatabaseContext\TypeAheadEntitiesContext.cs" />
+    <Compile Include="Models\Person.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -193,9 +182,6 @@
     <Compile Include="Models\Autocomplete.cs" />
     <Compile Include="Models\HelloWorld.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Person.cs">
-      <DependentUpon>AWModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -211,23 +197,6 @@
     <Content Include="Scripts\bloodhound.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="AWModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AWModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="AWModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AWModel.edmx</DependentUpon>
-      <LastGenOutput>AWModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="AWModel.edmx.diagram">
-      <DependentUpon>AWModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="AWModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AWModel.edmx</DependentUpon>
-      <LastGenOutput>AWModel.cs</LastGenOutput>
-    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
