@@ -154,5 +154,4 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
-/example/WebApplication2/WebApplication2/App_Data
-/example/WebApplication2/.vs
+/.vs/config/applicationhost.config
