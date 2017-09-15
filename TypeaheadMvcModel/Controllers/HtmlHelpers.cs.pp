@@ -45,7 +45,7 @@ namespace $rootnamespace$.Models
                 idFieldString += string.Format("_{0}_", index);
             }
 
-            return CreateTextBoxForFromAutocompleteFor<TModel, TProperty1, TProperty2>(html, valueExpression, actionName, controllerName, requestFocus, idFieldString, new object { });;
+            return CreateTextBoxForFromAutocompleteFor<TModel, TProperty1, TProperty2>(html, valueExpression, actionName, controllerName, requestFocus, idFieldString, additionalViewData);;
         }
 
         private static MvcHtmlString CreateTextBoxForFromAutocompleteFor<TModel, TProperty1, TProperty2>(
@@ -65,58 +65,61 @@ namespace $rootnamespace$.Models
             string autocompleteIdField = idFieldString.Substring(loc + 1, idFieldString.Length - loc - 1)
                 .Replace('.', '_');
 
-            dynamic htmlAttributes = new ExpandoObject();
+            var additionalViewDataDictionary = HtmlHelper.ObjectToDictionary(additionalViewData);
+            RouteValueDictionary defaultHtmlAttributes = new RouteValueDictionary();
+            defaultHtmlAttributes.Add("class", "typeahead");
+            defaultHtmlAttributes.Add("data-autocomplete-url", autocompleteUrl);
+            defaultHtmlAttributes.Add("data-autocomplete-id-field", autocompleteIdField);
 
-            // handle additional view data
-            if (additionalViewData != null)
+            IDictionary<string, object> htmlAttributes = new RouteValueDictionary();
+            if (additionalViewDataDictionary.ContainsKey("htmlAttributes"))
             {
-                var additionalViewDataPropertyNamesAndValues = additionalViewData.GetType()
-                    .GetProperties()
-                    .Where(pi => pi.GetGetMethod() != null)
-                    .Select(pi => new
-                    {
-                        Name = pi.Name,
-                        Value = pi.GetGetMethod().Invoke(additionalViewData, null)
-                    });
+                htmlAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(additionalViewDataDictionary["htmlAttributes"]);
+            }
+            htmlAttributes = html.MergeHtmlAttributes(htmlAttributes, defaultHtmlAttributes);
 
-                foreach (var pair in additionalViewDataPropertyNamesAndValues)
+            return html.TextBoxFor(valueExpression, htmlAttributes);
+        }
+        public static IDictionary<string, object> MergeHtmlAttributes(this HtmlHelper helper, object htmlAttributesObject, object defaultHtmlAttributesObject)
+        {
+            var concatKeys = new string[] { "class" };
+            var htmlAttributesDict = htmlAttributesObject as IDictionary<string, object>;
+            var defaultHtmlAttributesDict = defaultHtmlAttributesObject as IDictionary<string, object>;
+
+            RouteValueDictionary htmlAttributes = (htmlAttributesDict != null)
+                ? new RouteValueDictionary(htmlAttributesDict)
+                : HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributesObject);
+            RouteValueDictionary defaultHtmlAttributes = (defaultHtmlAttributesDict != null)
+                ? new RouteValueDictionary(defaultHtmlAttributesDict)
+                : HtmlHelper.AnonymousObjectToHtmlAttributes(defaultHtmlAttributesObject);
+
+            foreach (var item in htmlAttributes)
+            {
+                if (concatKeys.Contains(item.Key) && defaultHtmlAttributes.ContainsKey(item.Key))
                 {
-                    if (pair.Name == "htmlAttributes")
-                    {
-
-                        var htmlAttributesPropertyNamesAndValues = pair.Value.GetType()
-                            .GetProperties()
-                            .Where(pi => pi.PropertyType == typeof (string) && pi.GetGetMethod() != null)
-                            .Select(pi => new
-                            {
-                                Name = pi.Name,
-                                Value = pi.GetGetMethod().Invoke(pair.Value, null)
-                            });
-                        foreach (var pair2 in htmlAttributesPropertyNamesAndValues)
-                        {
-                            var pair2Name = pair2.Name;
-							if (pair2Name.Contains("data_"))
-							{
-								var dataAttributeName = pair2.Name.Replace("data_", "data-");
-								pair2Name = dataAttributeName;
-							}
-                            ((IDictionary<string, object>) htmlAttributes).Add(pair2Name, pair2.Value);
-                        }
-                    }
+                    //If the existing value is not null and is not a blank string then concatenate the value else overwrite the value.
+                    defaultHtmlAttributes[item.Key] = (defaultHtmlAttributes[item.Key] != null && !string.IsNullOrEmpty(defaultHtmlAttributes[item.Key].ToString()))
+                        //Add the passed in values to the back of the default concat values
+                        ? string.Format("{0} {1}", defaultHtmlAttributes[item.Key], item.Value)
+                        //use the passed in value as is
+                        : item.Value;
+                }
+                else
+                {
+                    defaultHtmlAttributes.MergeAttribute(item.Key, item.Value);
                 }
             }
-            // add @class if it is not there yet
-            if (!((IDictionary<string, object>) htmlAttributes).ContainsKey("@class"))
-            {
-                htmlAttributes.@class = "";
-            }
 
-            string @class = (!((string) htmlAttributes.@class).Contains("typeahead") ? "typeahead" : "");
-            ((IDictionary<string, object>) htmlAttributes).Add("data-autocomplete-url", autocompleteUrl);
-            ((IDictionary<string, object>)htmlAttributes).Add("data-autocomplete-id-field", autocompleteIdField);
-            htmlAttributes.@class += (!string.IsNullOrEmpty(htmlAttributes.@class) ? " " : "") + @class;
-
-            return html.TextBoxFor(valueExpression, ((IDictionary<string, object>)htmlAttributes));
+            return defaultHtmlAttributes;
+        }
+        public static void MergeAttribute(this IDictionary<string, object> attributes, string name, object value)
+        {
+            if (attributes.Keys.Contains(name))
+                //Overwrite the existing value
+                attributes[name] = value;
+            else
+                //Add a new value
+                attributes.Add(name, value);
         }
     }
 }
