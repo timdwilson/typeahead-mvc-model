@@ -8,7 +8,7 @@
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             remote: {
                 wildcard: "%QUERY",
-                url: $(obj).data("autocomplete-url") + "?query=%QUERY",
+                url: ($(obj).data("autocomplete-url") + ($(obj).data("autocomplete-url").indexOf("?") >= 0)? "&" : "?" + "query=%QUERY"),
                 transform: function (autos) {
                     // Map the remote source JSON array to a JavaScript object array
                     return $.map(autos, function (auto) {
@@ -31,7 +31,12 @@
             name: 'autos', displayKey: 'value', source: autos
         }).on('typeahead:select', function (obj, datum) {
             onselected(obj, datum);
-        });
+            }).on('typeahead:asyncrequest', function () {
+                $('.typeahead').addClass('input-loading');
+            })
+            .on('typeahead:asynccancel typeahead:asyncreceive', function () {
+                $('.typeahead').removeClass('input-loading');
+            });
 
         //Check if a change callback was requested and bind it if it exists
         var trigger$ = $(obj);

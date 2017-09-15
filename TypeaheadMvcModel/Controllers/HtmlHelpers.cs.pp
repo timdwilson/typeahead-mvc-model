@@ -83,7 +83,6 @@ namespace $rootnamespace$.Models
         public static IDictionary<string, object> MergeHtmlAttributes(this HtmlHelper helper, object htmlAttributesObject, object defaultHtmlAttributesObject)
         {
             var concatKeys = new string[] { "class" };
-
             var htmlAttributesDict = htmlAttributesObject as IDictionary<string, object>;
             var defaultHtmlAttributesDict = defaultHtmlAttributesObject as IDictionary<string, object>;
 
