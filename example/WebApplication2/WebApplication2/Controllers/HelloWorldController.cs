@@ -11,12 +11,22 @@ using WebApplication2.Models;
 
 // entity exceptions
 using System.Data.Entity.Core;
+using WebApplication2.DatabaseContext;
 
 namespace WebApplication2.Controllers
 {
     public class HelloWorldController : Controller
     {
-        private AWEntities db = new AWEntities();
+        private readonly DatabaseContext.TypeAheadEntitiesContext _db = new DatabaseContext.TypeAheadEntitiesContext();
+
+        private TypeAheadEntitiesContext db
+        {
+            get
+            {
+                _db.SeedIfEmpty();
+                return _db;
+            }
+        }
 
         // GET: HelloWorld
         public ActionResult Index()

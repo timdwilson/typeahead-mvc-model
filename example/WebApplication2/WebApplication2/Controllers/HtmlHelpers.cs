@@ -107,7 +107,6 @@ namespace WebApplication2.Models
             string @class = (!((string) htmlAttributes.@class).Contains("typeahead") ? "typeahead" : "");
             ((IDictionary<string, object>) htmlAttributes).Add("data-autocomplete-url", autocompleteUrl);
             ((IDictionary<string, object>)htmlAttributes).Add("data-autocomplete-id-field", autocompleteIdField);
-            htmlAttributes.data_autocomplete_url = autocompleteUrl;
             htmlAttributes.@class += (!string.IsNullOrEmpty(htmlAttributes.@class) ? " " : "") + @class;
 
             return html.TextBoxFor(valueExpression, ((IDictionary<string, object>)htmlAttributes));
